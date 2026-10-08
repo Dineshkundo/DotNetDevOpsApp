@@ -21,7 +21,9 @@ pipeline {
         stage('Restore') {
             steps {
                 sh '''
-                    dotnet restore "$PROJECT" --runtime linux-x64
+                    dotnet restore "$PROJECT" \
+                    --runtime linux-x64
+
                     dotnet restore "$TEST_PROJECT"
                 '''
             }
@@ -53,14 +55,20 @@ pipeline {
                 sh '''
                     rm -rf "$PUBLISH_DIR"
 
+                    dotnet restore "$PROJECT" \
+                    --runtime linux-x64
+
                     dotnet publish "$PROJECT" \
-                        --configuration Release \
-                        --runtime linux-x64 \
-                        --self-contained true \
-                        --output "$PUBLISH_DIR" \
-                        --no-restore
+                    --configuration Release \
+                    --runtime linux-x64 \
+                    --self-contained true \
+                    --output "$PUBLISH_DIR" \
+                    --no-restore
 
                     chmod +x "$PUBLISH_DIR/DotNetDevOpsApp"
+
+                    echo "Published files:"
+                    ls -lh "$PUBLISH_DIR"
                 '''
             }
         }
