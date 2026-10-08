@@ -1,0 +1,19 @@
+[Unit]
+Description=DotNetDevOpsApp ASP.NET Core Application
+After=network.target
+
+[Service]
+Type=exec
+User=dotnetapp
+Group=dotnetapp
+WorkingDirectory=/opt/dotnetapp
+ExecStart=/opt/dotnetapp/DotNetDevOpsApp
+Restart=always
+RestartSec=10
+Environment=ASPNETCORE_ENVIRONMENT=Production
+Environment=ASPNETCORE_URLS=http://127.0.0.1:5000
+NoNewPrivileges=true
+PrivateTmp=true
+
+[Install]
+WantedBy=multi-user.target
